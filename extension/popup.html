@@ -2,97 +2,124 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Unfiltered</title>
 
     <link rel="stylesheet" href="popup.css">
-
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="app">
 
-        <div class="header">
-
-            <div class="logo">
+        <header class="header">
+            <div class="brand">
+                <div class="brand-dot"></div>
                 UNFILTERED
             </div>
 
-            <div class="status">
-                ● WATCHING
+            <div class="live">
+                ● LIVE
+            </div>
+        </header>
+
+
+        <main>
+
+            <div class="signal">
+
+                <span class="signal-icon">◉</span>
+
+                <span id="signalText">
+                    BEHAVIOR SIGNAL
+                </span>
+
             </div>
 
-        </div>
 
-
-        <div class="main">
-
-            <div class="eyebrow">
-                BEHAVIORAL SIGNAL DETECTED
-            </div>
-
-            <h1>
+            <h1 id="headline">
                 What's the story?
             </h1>
 
-            <p id="contextText">
-                Analyzing your recent behavior...
+
+            <p id="contextText" class="context">
+                Looking at your recent behavior...
             </p>
 
 
             <textarea
                 id="reason"
-                placeholder="Tell me what you're telling yourself right now..."
+                placeholder="What's your excuse?"
             ></textarea>
 
 
             <button id="submitButton">
-                CHECK ME
+                <span>CHECK ME</span>
+                <span class="arrow">↗</span>
             </button>
 
 
-            <div id="loading" class="hidden">
+            <div id="loading" class="loading hidden">
 
-                <div class="spinner"></div>
+                <div class="loader"></div>
 
-                <p>
-                    Gemini is thinking...
+                <span>
+                    Reading between the lines...
+                </span>
+
+            </div>
+
+
+            <section
+                id="responseContainer"
+                class="response hidden"
+            >
+
+                <div class="response-top">
+
+                    <span class="response-label">
+                        UNFILTERED
+                    </span>
+
+                    <span id="verdict"
+                          class="verdict">
+                    </span>
+
+                </div>
+
+
+                <h2 id="responseHeadline">
+                </h2>
+
+
+                <p id="responseMessage">
                 </p>
 
-            </div>
 
-
-            <div id="responseContainer" class="hidden">
-
-                <div class="responseLabel">
-                    UNFILTERED
+                <div
+                    id="evidence"
+                    class="evidence"
+                >
                 </div>
 
-                <div id="response">
-                </div>
+            </section>
 
-            </div>
-
-        </div>
+        </main>
 
 
-        <div class="footer">
+        <footer>
 
             <span>
-                No page content is read.
+                Behavior signals only
             </span>
 
             <span>
-                Local behavior only.
+                No page content read
             </span>
 
-        </div>
+        </footer>
 
     </div>
 

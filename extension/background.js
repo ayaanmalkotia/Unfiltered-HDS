@@ -1,14 +1,7 @@
-// ============================================
-// UNFILTERED - BACKGROUND SERVICE WORKER
-// ============================================
 
 const VISIT_THRESHOLD = 4;
 const TIME_WINDOW = 60 * 60 * 1000; // 1 hour
 
-
-// --------------------------------------------
-// When user switches to another tab
-// --------------------------------------------
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
 
@@ -29,9 +22,6 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 });
 
 
-// --------------------------------------------
-// Also detect when a tab navigates
-// --------------------------------------------
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
@@ -44,9 +34,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 
-// --------------------------------------------
-// Record visit
-// --------------------------------------------
 
 async function recordDomainVisit(url) {
 
@@ -54,7 +41,6 @@ async function recordDomainVisit(url) {
 
         const parsedUrl = new URL(url);
 
-        // Ignore browser internal pages
         if (
             parsedUrl.protocol === "chrome:" ||
             parsedUrl.protocol === "edge:" ||
@@ -76,7 +62,6 @@ async function recordDomainVisit(url) {
             timestamp: now
         });
 
-        // Keep only last 7 days
         const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
 
         visits = visits.filter(
@@ -98,9 +83,6 @@ async function recordDomainVisit(url) {
 }
 
 
-// --------------------------------------------
-// Detect suspicious repetition
-// --------------------------------------------
 
 async function checkForPattern(domain, visits) {
 
@@ -125,7 +107,6 @@ async function checkForPattern(domain, visits) {
 
         });
 
-        // Put ! badge on extension
         chrome.action.setBadgeText({
             text: "!"
         });
@@ -138,10 +119,6 @@ async function checkForPattern(domain, visits) {
 
 }
 
-
-// --------------------------------------------
-// Message handler
-// --------------------------------------------
 
 chrome.runtime.onMessage.addListener(
     (message, sender, sendResponse) => {
@@ -169,9 +146,6 @@ chrome.runtime.onMessage.addListener(
 );
 
 
-// --------------------------------------------
-// Get current behavioral context
-// --------------------------------------------
 
 async function getContext() {
 
