@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Unfiltered</title>
+
+    <link rel="stylesheet" href="popup.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+
+            <div class="logo">
+                UNFILTERED
+            </div>
+
+            <div class="status">
+                ● WATCHING
+            </div>
+
+        </div>
+
+
+        <div class="main">
+
+            <div class="eyebrow">
+                BEHAVIORAL SIGNAL DETECTED
+            </div>
+
+            <h1>
+                What's the story?
+            </h1>
+
+            <p id="contextText">
+                Analyzing your recent behavior...
+            </p>
+
+
+            <textarea
+                id="reason"
+                placeholder="Tell me what you're telling yourself right now..."
+            ></textarea>
+
+
+            <button id="submitButton">
+                CHECK ME
+            </button>
+
+
+            <div id="loading" class="hidden">
+
+                <div class="spinner"></div>
+
+                <p>
+                    Gemini is thinking...
+                </p>
+
+            </div>
+
+
+            <div id="responseContainer" class="hidden">
+
+                <div class="responseLabel">
+                    UNFILTERED
+                </div>
+
+                <div id="response">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            <span>
+                No page content is read.
+            </span>
+
+            <span>
+                Local behavior only.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <script src="popup.js"></script>
+
+</body>
+
+</html>
