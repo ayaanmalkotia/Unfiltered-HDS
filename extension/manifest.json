@@ -6,7 +6,8 @@
 
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "notifications"
   ],
 
   "host_permissions": [
@@ -20,13 +21,12 @@
   "action": {
     "default_popup": "popup.html",
     "default_title": "Unfiltered",
-
     "default_icon": {
-      "128": "finalicon.png"
+      "128": "icons/finalicon.png"
     }
   },
 
   "icons": {
-    "128": "finalicon.png"
+    "128": "icons/finalicon.png"
   }
 }

@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -9,42 +8,61 @@ const {
 } = require("@google/genai");
 
 
-const app = express();
-
+const app =
+    express();
 
 
 app.use(cors());
 
-app.use(express.json());
+app.use(
+    express.json()
+);
 
 
+// ============================================
+// GEMINI
+// ============================================
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
-});
+const ai =
+    new GoogleGenAI({
 
+        apiKey:
+            process.env.GEMINI_API_KEY
 
-
-app.post("/analyze", async (req, res) => {
-
-    try {
-
-        const {
-            behavior,
-            userReason
-        } = req.body;
+    });
 
 
-        if (!userReason) {
+// ============================================
+// ANALYZE
+// ============================================
 
-            return res.status(400).json({
-                error: "User reasoning is required."
-            });
+app.post(
+    "/analyze",
+    async (req, res) => {
 
-        }
+        try {
+
+            const {
+                behavior,
+                userReason
+            } = req.body;
 
 
-        const prompt = `
+            if (!userReason) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        error:
+                            "User reasoning is required."
+
+                    });
+
+            }
+
+
+            const prompt = `
 
 You are Unfiltered.
 
@@ -57,133 +75,190 @@ You are NOT a therapist.
 You are NOT a productivity coach.
 You are NOT a corporate assistant.
 
+You should sound like a smart friend who noticed
+something the user probably hoped would go unnoticed.
+
 Do not lecture.
 Do not give generic advice.
 Do not over-explain.
-
-You should sound like a smart friend who noticed
-something the user probably hoped would go unnoticed.
 
 IMPORTANT:
 
 - Do not assume the user is lying.
 - Behavioral evidence can be ambiguous.
-- If their explanation is reasonable, acknowledge it.
-- Never invent behavior that isn't provided.
+- If the explanation is reasonable, acknowledge it.
+- Never invent behavior.
 - Never shame or insult the user.
 - Be concise.
 - Be conversational.
-- Avoid phrases like "your stated behavior", "behavioral
-  context", "possible rationalization", "the evidence
-  suggests", etc.
+- Talk directly to the user.
 - Do not sound like an AI report.
+- Do not use phrases like "behavioral context".
+- Do not use phrases like "the evidence suggests".
+- Do not use phrases like "your stated behavior".
 
-BEHAVIOR:
+SPECIFIC SITE:
 
-${JSON.stringify(behavior, null, 2)}
+${behavior?.specificSite || "Unknown"}
+
+VISITS IN LAST HOUR:
+
+${behavior?.visitsLastHour || 0}
+
+THRESHOLD:
+
+${behavior?.threshold || 4}
+
+RECENT ACTIVITY:
+
+${JSON.stringify(
+    behavior?.recentActivity || [],
+    null,
+    2
+)}
 
 USER'S EXPLANATION:
 
 "${userReason}"
 
-Return ONLY valid JSON in this exact structure:
+
+A repeated visit to the SAME site is especially important.
+
+When a specific site has been opened repeatedly,
+mention the site and the number of visits naturally.
+
+Do NOT vaguely say:
+
+"Your browsing behavior is concerning."
+
+Instead say something like:
+
+"You've opened YouTube six times in the last hour.
+That makes 'just taking a quick break' a little harder
+to sell."
+
+The response should feel personal and conversational.
+
+If the user's explanation actually makes sense,
+say so.
+
+Return ONLY valid JSON.
+
+Use exactly:
 
 {
-  "verdict": "one short label",
-  "headline": "2-6 words",
-  "message": "A natural 1-3 sentence response to the user.",
-  "evidence": "One short sentence mentioning the specific behavior that led to this conclusion."
+    "verdict": "FAIR",
+    "headline": "2-6 word human headline",
+    "message": "1-3 natural sentences.",
+    "evidence": "One short sentence using the specific evidence."
 }
 
-Possible verdicts:
+The verdict MUST be:
 
 "FAIR"
+
+or
+
 "QUESTIONABLE"
+
+or
+
 "CALLING IT"
 
-The headline should be punchy and human.
 
-Examples:
+Do not put markdown in the JSON.
 
-{
-  "verdict": "CALLING IT",
-  "headline": "That's not a break anymore.",
-  "message": "You said you needed a quick break, but you've opened YouTube four times in the last hour. At some point the break stopped being the break.",
-  "evidence": "YouTube was opened 4 times in the last hour."
-}
-
-Another example:
-
-{
-  "verdict": "FAIR",
-  "headline": "I'll allow it.",
-  "message": "You said you wanted to watch one episode, and that's exactly what you did. For once, the excuse survived contact with reality.",
-  "evidence": "Your behavior matches the intention you described."
-}
-
-Keep the entire response concise.
+Keep the response concise.
 
 `;
 
 
+            const response =
+                await ai.models.generateContent({
 
-        const response =
-            await ai.models.generateContent({
+                    model:
+                        "gemini-3.8-flash",
 
-                model: "gemini-3.8-flash",
+                    contents:
+                        prompt,
 
-                contents: prompt
+                    config: {
+
+                        responseMimeType:
+                            "application/json"
+
+                    }
+
+                });
+
+
+            const result =
+                JSON.parse(
+                    response.text
+                );
+
+
+            res.json(
+                result
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Gemini error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                error:
+                    error.message ||
+                    "Failed to analyze behavior."
 
             });
 
+        }
 
-        const text =
-            response.text;
+    }
+);
 
+
+// ============================================
+// HEALTH CHECK
+// ============================================
+
+app.get(
+    "/",
+    (req, res) => {
 
         res.json({
 
-            response: text
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "Gemini error:",
-            error
-        );
-
-
-        res.status(500).json({
-
-            error:
-                "Failed to analyze behavior."
+            status:
+                "Unfiltered backend running"
 
         });
 
     }
+);
 
-});
+
+// ============================================
+// SERVER
+// ============================================
+
+const PORT =
+    3000;
 
 
-app.get("/", (req, res) => {
+app.listen(
+    PORT,
+    () => {
 
-    res.json({
+        console.log(
+            `Unfiltered server running on http://localhost:${PORT}`
+        );
 
-        status: "Unfiltered backend running"
-
-    });
-
-});
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
-
-    console.log(
-        `Unfiltered server running on http://localhost:${PORT}`
-    );
-
-});
+    }
+);

@@ -2,126 +2,379 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Unfiltered</title>
 
-    <link rel="stylesheet" href="popup.css">
+    <link
+        rel="stylesheet"
+        href="popup.css"
+    >
+
 </head>
+
 
 <body>
 
-    <div class="app">
+    <!-- ================================= -->
+    <!-- MAIN APP -->
+    <!-- ================================= -->
+
+    <main id="mainView">
 
         <header class="header">
+
             <div class="brand">
-                <div class="brand-dot"></div>
+
+                <div class="brand-mark"></div>
+
                 UNFILTERED
+
             </div>
 
-            <div class="live">
-                ● LIVE
-            </div>
+
+            <button
+                id="logsButton"
+                class="small-button"
+            >
+                LOGS
+            </button>
+
         </header>
 
 
-        <main>
 
-            <div class="signal">
+        <!-- SITE SIGNAL -->
 
-                <span class="signal-icon">◉</span>
+        <section
+            id="siteSignal"
+            class="signal hidden"
+        >
 
-                <span id="signalText">
-                    BEHAVIOR SIGNAL
+            <div class="signal-label">
+
+                REPEATED VISIT
+
+            </div>
+
+
+            <div
+                id="siteDomain"
+                class="site-domain"
+            >
+                YOUTUBE.COM
+            </div>
+
+
+            <div
+                id="siteCount"
+                class="site-count"
+            >
+                4 visits
+            </div>
+
+
+            <div class="signal-sub">
+
+                in the last hour
+
+            </div>
+
+        </section>
+
+
+
+        <!-- NORMAL CONTENT -->
+
+        <section
+            id="normalContent"
+            class="content"
+        >
+
+            <div class="eyebrow">
+                WHAT'S THE STORY?
+            </div>
+
+
+            <textarea
+                id="reasonInput"
+                placeholder="Tell me what you're doing..."
+            ></textarea>
+
+
+            <button
+                id="analyzeButton"
+                class="primary-button"
+            >
+                CHECK ME
+            </button>
+
+        </section>
+
+
+
+        <!-- GEMINI RESPONSE -->
+
+        <section
+            id="responseCard"
+            class="response-card hidden"
+        >
+
+            <div class="response-top">
+
+                <span
+                    id="verdict"
+                    class="verdict"
+                >
+                    CALLING IT
                 </span>
 
             </div>
 
 
-            <h1 id="headline">
-                What's the story?
+            <h2 id="responseHeadline">
+                That's not a break anymore.
+            </h2>
+
+
+            <p id="responseMessage">
+            </p>
+
+
+            <div class="evidence">
+
+                <span>
+                    EVIDENCE
+                </span>
+
+                <p id="responseEvidence">
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <nav class="bottom-nav">
+
+            <button id="ledgerButton">
+                LEDGER
+            </button>
+
+        </nav>
+
+    </main>
+
+
+
+    <!-- ================================= -->
+    <!-- LOGS -->
+    <!-- ================================= -->
+
+    <main
+        id="logsView"
+        class="page hidden"
+    >
+
+        <header class="page-header">
+
+            <button
+                id="backFromLogs"
+                class="back-button"
+            >
+                ← BACK
+            </button>
+
+
+            <span>
+                PAST ACTIONS
+            </span>
+
+        </header>
+
+
+        <div
+            id="logsList"
+            class="logs-list"
+        >
+        </div>
+
+    </main>
+
+
+
+    <!-- ================================= -->
+    <!-- LEDGER -->
+    <!-- ================================= -->
+
+    <main
+        id="ledgerView"
+        class="page hidden"
+    >
+
+        <header class="page-header">
+
+            <button
+                id="backFromLedger"
+                class="back-button"
+            >
+                ← BACK
+            </button>
+
+
+            <span>
+                CALIBRATION
+            </span>
+
+        </header>
+
+
+        <div class="ledger-intro">
+
+            How often did your intentions
+            survive contact with reality?
+
+        </div>
+
+
+        <div
+            id="ledgerList"
+            class="ledger-list"
+        >
+        </div>
+
+    </main>
+
+
+
+    <!-- ================================= -->
+    <!-- REFLECTION GATE -->
+    <!-- ================================= -->
+
+    <main
+        id="gateView"
+        class="gate hidden"
+    >
+
+        <div class="gate-top">
+
+            <div class="brand">
+
+                <div class="brand-mark"></div>
+
+                UNFILTERED
+
+            </div>
+
+        </div>
+
+
+        <div class="gate-content">
+
+            <div class="gate-label">
+                YOU'VE BEEN HERE BEFORE
+            </div>
+
+
+            <h1 id="gateDomain">
+                YOUTUBE.COM
             </h1>
 
 
-            <p id="contextText" class="context">
-                Looking at your recent behavior...
+            <div
+                id="gateCount"
+                class="gate-count"
+            >
+                6 visits
+            </div>
+
+
+            <div class="gate-window">
+                in the last hour
+            </div>
+
+
+            <p class="gate-question">
+
+                Is this actually what
+                you intended to do?
+
             </p>
 
 
             <textarea
-                id="reason"
-                placeholder="What's your excuse?"
+                id="gateReason"
+                placeholder="What's your reason this time?"
             ></textarea>
 
 
-            <button id="submitButton">
-                <span>CHECK ME</span>
-                <span class="arrow">↗</span>
+            <button
+                id="gateAnalyze"
+                class="gate-button"
+            >
+                LET'S BE HONEST
             </button>
 
 
-            <div id="loading" class="loading hidden">
-
-                <div class="loader"></div>
-
-                <span>
-                    Reading between the lines...
-                </span>
-
-            </div>
+            <button
+                id="continueButton"
+                class="continue-button"
+            >
+                Continue anyway
+            </button>
 
 
-            <section
-                id="responseContainer"
-                class="response hidden"
+            <div
+                id="gateResponse"
+                class="gate-response hidden"
             >
 
-                <div class="response-top">
-
-                    <span class="response-label">
-                        UNFILTERED
-                    </span>
-
-                    <span id="verdict"
-                          class="verdict">
-                    </span>
-
-                </div>
-
-
-                <h2 id="responseHeadline">
-                </h2>
-
-
-                <p id="responseMessage">
-                </p>
-
-
                 <div
-                    id="evidence"
-                    class="evidence"
+                    id="gateVerdict"
+                    class="gate-verdict"
                 >
                 </div>
 
-            </section>
 
-        </main>
+                <h2 id="gateHeadline">
+                </h2>
 
 
-        <footer>
+                <p id="gateMessage">
+                </p>
 
-            <span>
-                Behavior signals only
-            </span>
 
-            <span>
-                No page content read
-            </span>
+                <div class="gate-evidence">
 
-        </footer>
+                    <span>
+                        EVIDENCE
+                    </span>
 
-    </div>
+                    <p id="gateEvidence">
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="acknowledgeButton"
+                    class="gate-button"
+                >
+                    I ACKNOWLEDGE IT
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
 
 
     <script src="popup.js"></script>
